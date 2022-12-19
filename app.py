@@ -18,7 +18,7 @@ def home():
 @app.route('/shortenurl', methods=['GET', 'POST'])
 def shortenurl():
     if request.method == 'POST':
-      absolutepath = request.form['url'])
+      absolutepath = request.form['url']
       shorten = randomstring(8)
       
       urlmapfile = open("urlmap.pkl", "wb")
