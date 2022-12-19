@@ -28,8 +28,9 @@ def shortenurl():
         urlmapdict = pickle.load(urlmapfile)
         urlmapfile.close()
       
-      urlmapfile = open(filename, "wb")
+      urlmapdict = {}
       urlmapdict[shorten] = absolutepath  
+      urlmapfile = open(filename, "wb")
       pickle.dump(urlmapdict, urlmapfile)
       urlmapfile.close()
       
@@ -37,8 +38,13 @@ def shortenurl():
     
 @app.route('/<variable>')
 def redirect(variable):
-    urlmapfile = open("urlmap.pkl", "rb")
-    urlmapdict = pickle.load(urlmapfile)
-    absolutepath = urlmapdict[variable]
-    urlmapfile.close()
-    return redirect(absolutepath)
+    filename = "urlmap.pkl"
+    if os.path.exists(filename):
+        urlmapfile = open(filename, "rb")
+        urlmapdict = pickle.load(urlmapfile)
+        absolutepath = urlmapdict[variable]
+        urlmapfile.close()
+        return redirect(absolutepath)
+    else:
+        return "URL mapping file does not exist!"
+    
