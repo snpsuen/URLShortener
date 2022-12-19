@@ -24,12 +24,17 @@ def shortenurl():
       urlmapfile = open("urlmap.pkl", "wb")
       urlmapfile.close()
       urlmapfile = open("urlmap.pkl", "rb")
-      urlmapdict = pickle.load(urlmap)
+      urlmapdict = pickle.load(urlmapfile)
       
       urlmapdict[shorten] = absolutepath
       pickle.dump(urlmapdict, urlmapfile)
       urlmapfile.close()
       return render_template('result.html', variable=shorten)
     
-@app.route('/<shorturl>', methods=['GET', 'POST'])
- 
+@app.route('/<variable>')
+def redirect(variable):
+    urlmapfile = open("urlmap.pkl", "rb")
+    urlmapdict = pickle.load(urlmapfile)
+    absolutepath = urlmapdict[variable]
+    urlmapfile.close()
+    return redirect(absolutepath)
