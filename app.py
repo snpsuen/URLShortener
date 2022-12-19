@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 import pickle, random, string
+import os.path
 
 def randomstring(length):
     return ''.join(
@@ -21,14 +22,17 @@ def shortenurl():
       absolutepath = request.form['url']
       shorten = randomstring(8)
       
-      urlmapfile = open("urlmap.pkl", "wb")
-      urlmapfile.close()
-      urlmapfile = open("urlmap.pkl", "rb")
-      urlmapdict = pickle.load(urlmapfile)
+      filename = "urlmap.pkl"
+      if os.path.exists(filename):
+        urlmapfile = open(filename, "rb")
+        urlmapdict = pickle.load(urlmapfile)
+        urlmapfile.close()
       
-      urlmapdict[shorten] = absolutepath
+      urlmapfile = open(filename, "wb")
+      urlmapdict[shorten] = absolutepath  
       pickle.dump(urlmapdict, urlmapfile)
       urlmapfile.close()
+      
       return render_template('result.html', variable=shorten)
     
 @app.route('/<variable>')
