@@ -29,5 +29,5 @@ def shortenurl():
       urlmapdict[shorten] = absolutepath
       pickle.dump(urlmapdict, urlmapfile)
       urlmapfile.close()
-      return render_template('result.html')
+      return render_template('result.html', shorten)
  
