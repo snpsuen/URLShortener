@@ -41,17 +41,17 @@ def shortenurl():
       
       return render_template('result.html', variable=shorten)
     
-@app.route('/<variable>')
-def redirect(variable):
+@app.route('/<shortpath>')
+def travel(shortpath):
     filename = "urlmap.pkl"
     if os.path.exists(filename):
         urlmapfile = open(filename, "rb")
         urlmapdict = pickle.load(urlmapfile)
-        if variable in urlmapdict:
-            fullurl = urlmapdict[variable]
+        if shortpath in urlmapdict:
+            fullurl = urlmapdict[shortpath]
             urlmapfile.close()
             return redirect(fullurl)
         else:
-            return(f"Short URL ({variable}) is not found!\n")
+            return(f"Short URL ({shortpath}) is not found!\n")
     else:
         return "URL mapping file does not exist!\n"
