@@ -23,7 +23,7 @@ def favicon():
 @app.route('/shortenurl', methods=['GET', 'POST'])
 def shortenurl():
     if request.method == 'POST':
-      absolutepath = request.form['url']
+      absolute = request.form['url']
       shorten = randomstring(8)
       
       filename = "urlmap.pkl"
@@ -31,27 +31,27 @@ def shortenurl():
         urlmapfile = open(filename, "rb")
         urlmapdict = pickle.load(urlmapfile)
         urlmapfile.close()
+      else:
+        urlmapdict = {}
       
-      urlmapdict = {}
-      urlmapdict[shorten] = absolutepath  
+      urlmapdict[shorten] = absolute
       urlmapfile = open(filename, "wb")
       pickle.dump(urlmapdict, urlmapfile)
       urlmapfile.close()
       
       return render_template('result.html', variable=shorten)
     
-@app.route('/<variable>')
+@app.route('/<string: variable>')
 def redirect(variable):
     filename = "urlmap.pkl"
     if os.path.exists(filename):
         urlmapfile = open(filename, "rb")
         urlmapdict = pickle.load(urlmapfile)
         try:
-            absolutepath = urlmapdict[variable]
+            fullurl = urlmapdict[variable]
             urlmapfile.close()
-            return redirect(absolutepath)
+            return redirect(fullurl)
         except KeyError as ke:
-            return(f"Short URL not found: {ke}")
+            return(f"Short URL ({ke}) is not found!\n")
     else:
-        return "URL mapping file does not exist!"
-    
+        return "URL mapping file does not exist!\n"
