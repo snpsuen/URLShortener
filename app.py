@@ -41,7 +41,7 @@ def shortenurl():
       
       return render_template('result.html', variable=shorten)
     
-@app.route('/<string: variable>')
+@app.route('/<variable>')
 def redirect(variable):
     filename = "urlmap.pkl"
     if os.path.exists(filename):
