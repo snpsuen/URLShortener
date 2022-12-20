@@ -47,11 +47,11 @@ def redirect(variable):
     if os.path.exists(filename):
         urlmapfile = open(filename, "rb")
         urlmapdict = pickle.load(urlmapfile)
-        try:
+        if variable in urlmapdict:
             fullurl = urlmapdict[variable]
             urlmapfile.close()
             return redirect(fullurl)
-        except KeyError as ke:
-            return(f"Short URL ({ke}) is not found!\n")
+        else:
+            return(f"Short URL ({variable}) is not found!\n")
     else:
         return "URL mapping file does not exist!\n"
