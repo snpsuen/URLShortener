@@ -16,6 +16,10 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
+@app.route('/favicon.ico')
+def favicon():
+    return redirect(url_for('static', filename='favicon.ico'), code=302)
+
 @app.route('/shortenurl', methods=['GET', 'POST'])
 def shortenurl():
     if request.method == 'POST':
